@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KickOff — Football for Beginners</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #00c853;
+  --green-dark: #009624;
+  --green-dim: #00c85322;
+  --pitch: #0b1a0c;
+  --pitch-mid: #111f12;
+  --card-bg: #152116;
+  --card-border: #243d26;
+  --text-primary: #eef5ee;
+  --text-secondary: #7fa882;
+  --text-muted: #446647;
+  --accent-yellow: #ffd600;
+  --accent-red: #ff3b30;
+  --accent-blue: #3b82f6;
+  --radius: 14px;
+  --radius-sm: 9px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--pitch);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* ─── NAVBAR ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(11,26,12,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem; height: 58px;
+}
+.nav-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px; font-weight: 900;
+  color: var(--text-primary); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  letter-spacing: 0.04em;
+}
+.nav-logo em { color: var(--green); font-style: normal; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 13px; font-weight: 500;
+  padding: 6px 13px; border-radius: 20px;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  background: var(--green-dim); color: var(--green);
+}
+.nav-live {
+  background: var(--accent-red); color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 8px; margin-left: 4px;
+  animation: blink 1.6s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* ─── HERO SLIDER ─── */
+.slider-section {
+  margin-top: 58px;
+  position: relative;
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  background: #0b1a0c;
+}
+
+.slides-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.77,0,0.175,1);
+}
+
+.slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8%;
+  overflow: hidden;
+}
+
+/* Slide backgrounds using CSS patterns + gradients */
+.slide-1 {
+  background:
+    linear-gradient(120deg, rgba(0,0,0,0.82) 45%, rgba(0,200,83,0.10) 100%),
+    radial-gradient(ellipse 80% 80% at 80% 50%, #00c85318 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 59px, #ffffff05 60px),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, #ffffff04 60px),
+    #0d2e10;
+}
+.slide-2 {
+  background:
+    linear-gradient(120deg, rgba(0,0,0,0.82) 45%, rgba(255,214,0,0.10) 100%),
+    radial-gradient(ellipse 80% 80% at 80% 50%, #ffd60018 0%, transparent 70%),
+    #1a1a00;
+}
+.slide-3 {
+  background:
+    linear-gradient(120deg, rgba(0,0,0,0.82) 45%, rgba(59,130,246,0.10) 100%),
+    radial-gradient(ellipse 80% 80% at 80% 50%, #3b82f618 0%, transparent 70%),
+    #00101a;
+}
+.slide-4 {
+  background:
+    linear-gradient(120deg, rgba(0,0,0,0.82) 45%, rgba(255,59,48,0.10) 100%),
+    radial-gradient(ellipse 80% 80% at 80% 50%, #ff3b3018 0%, transparent 70%),
+    #1a0500;
+}
+.slide-5 {
+  background:
+    linear-gradient(120deg, rgba(0,0,0,0.82) 45%, rgba(0,200,83,0.12) 100%),
+    radial-gradient(ellipse 80% 80% at 80% 50%, #00c85320 0%, transparent 70%),
+    #091a10;
+}
+
+/* Large decorative circle on right of each slide */
+.slide::before {
+  content: '';
+  position: absolute;
+  right: -80px; top: 50%;
+  transform: translateY(-50%);
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  border: 60px solid rgba(255,255,255,0.03);
+  pointer-events: none;
+}
+.slide::after {
+  content: '';
+  position: absolute;
+  right: 60px; top: 50%;
+  transform: translateY(-50%);
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.06);
+  pointer-events: none;
+}
+
+.slide-content { position: relative; z-index: 2; max-width: 560px; }
+
+.slide-tag {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 16px;
+  margin-bottom: 1.2rem;
+  border: 1px solid currentColor;
+  opacity: 0.9;
+}
+.tag-green { color: var(--green); border-color: var(--green-dark); background: #00c85315; }
+.tag-yellow { color: var(--accent-yellow); border-color: #b39700; background: #ffd60015; }
+.tag-blue { color: #60a5fa; border-color: #1d4ed8; background: #3b82f615; }
+.tag-red { color: #f87171; border-color: #991b1b; background: #ff3b3015; }
+
+.slide-content h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+.slide-content h2 span { display: block; }
+.slide-hl-green { color: var(--green); }
+.slide-hl-yellow { color: var(--accent-yellow); }
+.slide-hl-blue { color: #60a5fa; }
+.slide-hl-red { color: #f87171; }
+
+.slide-content p {
+  font-size: 15px; font-weight: 300;
+  color: rgba(220,240,220,0.75);
+  line-height: 1.65; margin-bottom: 2rem;
+  max-width: 420px;
+}
+.slide-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 26px; border-radius: 30px;
+  font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+  font-family: 'Barlow', sans-serif;
+  cursor: pointer; border: none;
+}
+.btn-green { background: var(--green); color: #000; }
+.btn-green:hover { background: #00e65f; transform: translateY(-2px); }
+.btn-yellow { background: var(--accent-yellow); color: #000; }
+.btn-yellow:hover { background: #ffe033; transform: translateY(-2px); }
+.btn-blue { background: #3b82f6; color: #fff; }
+.btn-blue:hover { background: #60a5fa; transform: translateY(-2px); }
+.btn-red { background: var(--accent-red); color: #fff; }
+.btn-red:hover { background: #ff6158; transform: translateY(-2px); }
+
+/* Big emoji art on right side of slide */
+.slide-art {
+  position: absolute;
+  right: 7%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 160px;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1;
+  filter: blur(1px);
+}
+
+/* Slider controls */
+.slider-arrow {
+  position: absolute; top: 50%; z-index: 10;
+  transform: translateY(-50%);
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+.slider-arrow:hover { background: rgba(0,200,83,0.25); border-color: var(--green); }
+.arrow-left { left: 20px; }
+.arrow-right { right: 20px; }
+
+.slider-dots {
+  position: absolute; bottom: 18px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 7px; z-index: 10;
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer; transition: all 0.3s;
+  border: none;
+}
+.dot.active { background: var(--green); width: 22px; border-radius: 4px; }
+
+.slider-progress {
+  position: absolute; bottom: 0; left: 0;
+  height: 3px; background: var(--green);
+  transition: width 0.1s linear;
+  z-index: 10;
+}
+
+/* slide number */
+.slide-counter {
+  position: absolute; top: 20px; right: 24px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.3); z-index: 10;
+  letter-spacing: 0.1em;
+}
+
+/* ─── STATS BAR ─── */
+.stats-bar {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0 2.5rem;
+  display: flex; gap: 0; overflow-x: auto;
+}
+.stat-item {
+  padding: 14px 28px;
+  border-right: 1px solid var(--card-border);
+  text-align: center; white-space: nowrap; flex-shrink: 0;
+}
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--green); display: block;
+}
+.stat-label { font-size: 11px; color: var(--text-muted); }
+
+/* ─── SECTION LAYOUT ─── */
+.page-wrap { max-width: 1060px; margin: 0 auto; padding: 3rem 2rem; }
+.section-header { margin-bottom: 1.6rem; }
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 27px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.03em;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: var(--card-border);
+  margin-left: 8px;
+}
+.section-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+/* ─── GUIDE CARDS ─── */
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+.guide-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  transition: all 0.22s; cursor: default;
+}
+.guide-card:hover { border-color: var(--green-dark); transform: translateY(-3px); }
+.guide-icon { font-size: 30px; margin-bottom: 0.8rem; display: block; }
+.guide-badge {
+  display: inline-block;
+  background: var(--green-dim); color: var(--green);
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; padding: 2px 9px; border-radius: 8px; margin-bottom: 8px;
+}
+.guide-card h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.guide-card p { font-size: 13px; line-height: 1.65; color: var(--text-secondary); }
+
+/* ─── SCORES ─── */
+.scores-list { display: flex; flex-direction: column; gap: 7px; }
+.match {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 11px 16px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto;
+  align-items: center; gap: 12px;
+  transition: border-color 0.15s;
+}
+.match:hover { border-color: #3a6a3c; }
+.match-team { font-size: 14px; font-weight: 500; }
+.match-team.away { text-align: right; }
+.match-score { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.score-n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: #fff; width: 20px; text-align: center;
+}
+.score-dash { color: var(--text-muted); }
+.status-ft {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 7px;
+  background: #1e3520; color: var(--text-muted);
+  flex-shrink: 0;
+}
+.winner { color: var(--green); }
+
+/* ─── STANDINGS ─── */
+.table-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius); overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+  background: #111f12;
+}
+thead th.c { text-align: center; }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: #1e3620; }
+tbody tr:not(:last-child) td { border-bottom: 1px solid #1c3220; }
+td { padding: 10px 12px; }
+td.c { text-align: center; color: var(--text-secondary); }
+td.pts { text-align: center; font-weight: 800; font-size: 14px; }
+.rank-n { color: var(--text-muted); font-size: 12px; }
+.team-cell { display: flex; align-items: center; gap: 10px; }
+.zone-bar { width: 3px; height: 32px; border-radius: 2px; flex-shrink: 0; }
+.zb-cl { background: var(--accent-blue); }
+.zb-el { background: var(--accent-yellow); }
+.zb-rel { background: var(--accent-red); }
+.zb-none { background: transparent; }
+.form-row { display: flex; gap: 3px; margin-top: 3px; }
+.fr { width: 7px; height: 7px; border-radius: 50%; }
+.fr-w { background: var(--green); }
+.fr-d { background: var(--text-muted); }
+.fr-l { background: var(--accent-red); }
+.table-legend {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  padding: 10px 14px; border-top: 1px solid var(--card-border);
+  font-size: 11px; color: var(--text-muted);
+}
+.tl { display: flex; align-items: center; gap: 5px; }
+.tl-d { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ─── POSITIONS ─── */
+.pos-section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  display: grid; grid-template-columns: 220px 1fr;
+  gap: 2.5rem; align-items: start;
+}
+.pitch-wrap {
+  background: #173d18;
+  border: 2px solid #2a5e2c;
+  border-radius: 10px;
+  aspect-ratio: 2/3;
+  position: relative; overflow: hidden;
+}
+.pitch-wrap::before {
+  content:''; position:absolute;
+  top:50%; left:0; right:0; height:1px;
+  background:#2a5e2c80;
+}
+.pitch-wrap::after {
+  content:''; position:absolute;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width:64px; height:64px;
+  border:1px solid #2a5e2c80;
+  border-radius:50%;
+}
+.pdot {
+  position:absolute;
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:800; text-transform:uppercase;
+  transform:translate(-50%,-50%);
+  cursor:pointer; transition:transform 0.15s;
+  letter-spacing:0.02em; box-shadow: 0 2px 8px #0006;
+}
+.pdot:hover { transform:translate(-50%,-50%) scale(1.25); }
+.gk { background:var(--accent-yellow); color:#000; top:90%; left:50%; }
+.lb { background:#2563eb; color:#fff; top:74%; left:18%; }
+.cb { background:#2563eb; color:#fff; top:74%; left:50%; }
+.rb { background:#2563eb; color:#fff; top:74%; left:82%; }
+.lm { background:var(--green); color:#000; top:52%; left:25%; }
+.rm { background:var(--green); color:#000; top:52%; left:75%; }
+.lw { background:var(--accent-red); color:#fff; top:28%; left:18%; }
+.st { background:var(--accent-red); color:#fff; top:20%; left:50%; }
+.rw { background:var(--accent-red); color:#fff; top:28%; left:82%; }
+.pos-detail h3 {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:19px; font-weight:800;
+  text-transform:uppercase; margin-bottom:1.2rem;
+}
+.pos-rows { display:flex; flex-direction:column; gap:12px; }
+.pos-row { display:flex; align-items:flex-start; gap:10px; }
+.pr-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:3px; }
+.pr-t { font-size:13px; font-weight:600; margin-bottom:2px; }
+.pr-d { font-size:12px; color:var(--text-secondary); line-height:1.5; }
+
+/* ─── RULES ─── */
+.rules-list { display:flex; flex-direction:column; gap:7px; }
+.rule {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius-sm); overflow:hidden;
+}
+.rule-head {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 16px; cursor:pointer; transition:background 0.15s;
+  user-select:none;
+}
+.rule-head:hover { background:#1e3620; }
+.rn {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:20px; font-weight:900;
+  color:var(--green); width:30px; flex-shrink:0;
+}
+.rt { font-size:14px; font-weight:500; flex:1; }
+.rarr { color:var(--text-muted); transition:transform 0.2s; }
+.rule.open .rarr { transform:rotate(180deg); }
+.rule-body { max-height:0; overflow:hidden; transition:max-height 0.3s ease; }
+.rule.open .rule-body { max-height:200px; }
+.rbd { padding:0 16px 14px 58px; font-size:13px; color:var(--text-secondary); line-height:1.7; }
+
+/* ─── GLOSSARY ─── */
+.gloss-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:10px;
+}
+.gc {
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:var(--radius-sm);
+  padding:14px;
+  transition:border-color 0.15s;
+}
+.gc:hover { border-color:var(--green-dark); }
+.gt {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:16px; font-weight:800;
+  color:var(--green); text-transform:uppercase;
+  letter-spacing:0.04em; margin-bottom:4px;
+}
+.gd { font-size:12px; color:var(--text-secondary); line-height:1.55; }
+
+/* ─── FOOTER ─── */
+footer {
+  background:var(--pitch-mid);
+  border-top:1px solid var(--card-border);
+  padding:2rem; text-align:center;
+  color:var(--text-muted); font-size:12px;
+}
+footer strong { color:var(--green); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:640px){
+  nav { padding:0 1rem; }
+  .nav-links { display:none; }
+  .slider-section { height:380px; }
+  .slide-content h2 { font-size:36px; }
+  .slide-art { font-size:90px; opacity:0.12; }
+  .stats-bar { padding:0 1rem; }
+  .page-wrap { padding:2rem 1rem; }
+  .pos-section { grid-template-columns:1fr; }
+  .match { grid-template-columns:1fr auto 1fr; }
+  .status-ft { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">⚽ Kick<em>Off</em></a>
+  <div class="nav-links">
+    <a href="#guide" class="active">Guide</a>
+    <a href="#scores">Scores <span class="nav-live">LIVE</span></a>
+    <a href="#standings">Table</a>
+    <a href="#positions">Positions</a>
+    <a href="#rules">Rules</a>
+    <a href="#glossary">Glossary</a>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO SLIDER ═══════════ -->
+<div class="slider-section" id="heroSlider">
+  <div class="slides-track" id="slidesTrack">
+
+    <!-- Slide 1: Welcome -->
+    <div class="slide slide-1">
+      <div class="slide-content">
+        <span class="slide-tag tag-green">⚽ Welcome</span>
+        <h2>
+          <span>Learn</span>
+          <span class="slide-hl-green">The Beautiful</span>
+          <span>Game</span>
+        </h2>
+        <p>New to football? Discover rules, positions, live scores and everything you need to become a true fan — explained in simple words.</p>
+        <a href="#guide" class="slide-btn btn-green">Start Learning ▶</a>
+      </div>
+      <div class="slide-art">⚽</div>
+    </div>
+
+    <!-- Slide 2: Results -->
+    <div class="slide slide-2">
+      <div class="slide-content">
+        <span class="slide-tag tag-yellow">🏆 Matchday 38</span>
+        <h2>
+          <span>Arsenal</span>
+          <span class="slide-hl-yellow">Champions</span>
+          <span>2025/26</span>
+        </h2>
+        <p>Arsenal clinch the Premier League title with 85 points — their best ever points total. See all final day results and the complete league table.</p>
+        <a href="#scores" class="slide-btn btn-yellow">See Scores ▶</a>
+      </div>
+      <div class="slide-art">🏆</div>
+    </div>
+
+    <!-- Slide 3: Positions -->
+    <div class="slide slide-3">
+      <div class="slide-content">
+        <span class="slide-tag tag-blue">📋 Tactics</span>
+        <h2>
+          <span>Know</span>
+          <span class="slide-hl-blue">Every</span>
+          <span>Position</span>
+        </h2>
+        <p>From goalkeeper to striker — learn what each player does on the pitch, what their role is, and why every position matters in the team.</p>
+        <a href="#positions" class="slide-btn btn-blue">Explore Positions ▶</a>
+      </div>
+      <div class="slide-art">🧱</div>
+    </div>
+
+    <!-- Slide 4: Rules -->
+    <div class="slide slide-4">
+      <div class="slide-content">
+        <span class="slide-tag tag-red">📖 Rules</span>
+        <h2>
+          <span>Master</span>
+          <span class="slide-hl-red">The Rules</span>
+          <span>Simply</span>
+        </h2>
+        <p>Confused by offside? Unsure about VAR? We break down all the key laws of the game in plain English so anyone can follow along.</p>
+        <a href="#rules" class="slide-btn btn-red">Learn Rules ▶</a>
+      </div>
+      <div class="slide-art">🟥</div>
+    </div>
+
+    <!-- Slide 5: Glossary -->
+    <div class="slide slide-5">
+      <div class="slide-content">
+        <span class="slide-tag tag-green">📚 Glossary</span>
+        <h2>
+          <span>Talk</span>
+          <span class="slide-hl-green">Like A</span>
+          <span>Football Fan</span>
+        </h2>
+        <p>Hat-trick, nutmeg, clean sheet, derby — learn the words every football fan uses and impress your friends with your new vocabulary.</p>
+        <a href="#glossary" class="slide-btn btn-green">See Glossary ▶</a>
+      </div>
+      <div class="slide-art">📢</div>
+    </div>
+
+  </div>
+
+  <!-- Controls -->
+  <button class="slider-arrow arrow-left" onclick="changeSlide(-1)">&#8249;</button>
+  <button class="slider-arrow arrow-right" onclick="changeSlide(1)">&#8250;</button>
+
+  <div class="slider-dots" id="sliderDots"></div>
+  <div class="slider-progress" id="sliderProgress"></div>
+  <div class="slide-counter" id="slideCounter">01 / 05</div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num">11</span><span class="stat-label">Players per side</span></div>
+  <div class="stat-item"><span class="stat-num">90</span><span class="stat-label">Minutes per match</span></div>
+  <div class="stat-item"><span class="stat-num">17</span><span class="stat-label">Laws of the game</span></div>
+  <div class="stat-item"><span class="stat-num">20</span><span class="stat-label">PL clubs</span></div>
+  <div class="stat-item"><span class="stat-num">38</span><span class="stat-label">Matchdays</span></div>
+  <div class="stat-item"><span class="stat-num">85</span><span class="stat-label">Arsenal's points</span></div>
+</div>
+
+<!-- GUIDE -->
+<div class="page-wrap" id="guide">
+  <div class="section-header">
+    <div class="section-title">Beginner's Guide</div>
+    <div class="section-sub">Everything you need to know to start watching football</div>
+  </div>
+  <div class="guide-grid" id="guideGrid"></div>
+</div>
+
+<!-- SCORES -->
+<div class="page-wrap" id="scores">
+  <div class="section-header">
+    <div class="section-title">Latest Results</div>
+    <div class="section-sub">Premier League · Matchday 38 · 24 May 2026</div>
+  </div>
+  <div class="scores-list" id="scoresList"></div>
+</div>
+
+<!-- STANDINGS -->
+<div class="page-wrap" id="standings">
+  <div class="section-header">
+    <div class="section-title">League Table</div>
+    <div class="section-sub">Final Premier League 2025/26 standings with recent form</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px">#</th>
+          <th>Club</th>
+          <th class="c">P</th>
+          <th class="c">W</th>
+          <th class="c">D</th>
+          <th class="c">L</th>
+          <th class="c">Pts</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="table-legend">
+      <div class="tl"><div class="tl-d" style="background:#3b82f6"></div>Champions League</div>
+      <div class="tl"><div class="tl-d" style="background:#ffd600"></div>Europa League</div>
+      <div class="tl"><div class="tl-d" style="background:#ff3b30"></div>Relegated</div>
+    </div>
+  </div>
+</div>
+
+<!-- POSITIONS -->
+<div class="page-wrap" id="positions">
+  <div class="section-header">
+    <div class="section-title">Player Positions</div>
+    <div class="section-sub">Where players stand and what they do (4-2-3 formation)</div>
+  </div>
+  <div class="pos-section">
+    <div class="pitch-wrap">
+      <div class="pdot gk">GK</div>
+      <div class="pdot lb">LB</div>
+      <div class="pdot cb">CB</div>
+      <div class="pdot rb">RB</div>
+      <div class="pdot lm">LM</div>
+      <div class="pdot rm">RM</div>
+      <div class="pdot lw">LW</div>
+      <div class="pdot st">ST</div>
+      <div class="pdot rw">RW</div>
+    </div>
+    <div class="pos-detail">
+      <h3>Positions Explained</h3>
+      <div class="pos-rows">
+        <div class="pos-row">
+          <div class="pr-dot" style="background:#ffd600"></div>
+          <div><div class="pr-t">Goalkeeper (GK)</div><div class="pr-d">The only player who can use their hands. Guards the goal and organises the defence.</div></div>
+        </div>
+        <div class="pos-row">
+          <div class="pr-dot" style="background:#2563eb"></div>
+          <div><div class="pr-t">Defenders — LB, CB, RB</div><div class="pr-d">Protect the goal. Centre backs deal with strikers; full backs (LB/RB) guard the sides of the pitch.</div></div>
+        </div>
+        <div class="pos-row">
+          <div class="pr-dot" style="background:#00c853"></div>
+          <div><div class="pr-t">Midfielders — LM, RM</div><div class="pr-d">The engine room. Win possession, distribute passes, support both attack and defence.</div></div>
+        </div>
+        <div class="pos-row">
+          <div class="pr-dot" style="background:#ff3b30"></div>
+          <div><div class="pr-t">Attackers — LW, ST, RW</div><div class="pr-d">Score goals. Wingers (LW/RW) play wide and cross; the Striker (ST) finishes chances in front of goal.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="page-wrap" id="rules">
+  <div class="section-header">
+    <div class="section-title">Key Rules</div>
+    <div class="section-sub">Click any rule to expand the explanation</div>
+  </div>
+  <div class="rules-list" id="rulesList"></div>
+</div>
+
+<!-- GLOSSARY -->
+<div class="page-wrap" id="glossary">
+  <div class="section-header">
+    <div class="section-title">Football Glossary</div>
+    <div class="section-sub">Words you'll hear commentators say — explained simply</div>
+  </div>
+  <div class="gloss-grid" id="glossGrid"></div>
+</div>
+
+<footer>
+  <p>Made for beginners, with love for the beautiful game · <strong>KickOff</strong> · Premier League data: Matchday 38, May 2026</p>
+</footer>
+
+<script>
+/* ── SLIDER ── */
+const TOTAL = 5;
+let cur = 0, timer, prog = 0, progTimer;
+const INTERVAL = 5000;
+
+const track = document.getElementById('slidesTrack');
+const dotsWrap = document.getElementById('sliderDots');
+const progressBar = document.getElementById('sliderProgress');
+const counter = document.getElementById('slideCounter');
+
+// Build dots
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsWrap.appendChild(d);
+}
+
+function updateDots() {
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+}
+function updateCounter() {
+  counter.textContent = String(cur + 1).padStart(2,'0') + ' / ' + String(TOTAL).padStart(2,'0');
+}
+function goTo(n) {
+  cur = (n + TOTAL) % TOTAL;
+  track.style.transform = `translateX(-${cur * 100}%)`;
+  updateDots(); updateCounter();
+  resetProgress();
+}
+function changeSlide(dir) { goTo(cur + dir); }
+function resetProgress() {
+  clearInterval(progTimer);
+  prog = 0; progressBar.style.width = '0%';
+  progTimer = setInterval(() => {
+    prog += 100 / (INTERVAL / 100);
+    progressBar.style.width = Math.min(prog, 100) + '%';
+    if (prog >= 100) { clearInterval(progTimer); }
+  }, 100);
+}
+function startAuto() {
+  clearInterval(timer);
+  timer = setInterval(() => goTo(cur + 1), INTERVAL);
+  resetProgress();
+}
+
+// Pause on hover
+document.getElementById('heroSlider').addEventListener('mouseenter', () => {
+  clearInterval(timer); clearInterval(progTimer);
+});
+document.getElementById('heroSlider').addEventListener('mouseleave', startAuto);
+
+// Touch swipe
+let tx = 0;
+document.getElementById('heroSlider').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.getElementById('heroSlider').addEventListener('touchend', e => {
+  const diff = tx - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 40) changeSlide(diff > 0 ? 1 : -1);
+});
+
+startAuto();
+updateCounter();
+
+/* ── GUIDE DATA ── */
+const guide = [
+  { badge:'Basics', icon:'🏟️', title:'The Pitch', text:'A rectangular grass field ~105m long. Each end has a goal. The aim: put the ball in the opposing team\'s goal more times than they score in yours.' },
+  { badge:'Basics', icon:'👥', title:'The Teams', text:'Two teams of 11 players each, including one goalkeeper. Up to 5 substitutes can be made per match from the bench.' },
+  { badge:'Basics', icon:'⏱️', title:'Match Time', text:'90 minutes split into two 45-minute halves. The referee adds stoppage time for delays. Cup ties can go to extra time and penalties if level.' },
+  { badge:'Scoring', icon:'🥅', title:'Scoring Goals', text:'The whole ball must cross the goal line between the posts and under the crossbar. Each goal equals 1 point. Highest score wins.' },
+  { badge:'Rules', icon:'🟨', title:'Yellow & Red Cards', text:'Yellow = warning. Two yellows = red card = sent off. A direct red card can also be given for serious fouls. Team continues with 10 men.' },
+  { badge:'Rules', icon:'⚖️', title:'The Offside Rule', text:'You can\'t receive the ball if you are ahead of the last defender when it is played to you. Stops players camping near the goal for easy tap-ins.' },
+  { badge:'League', icon:'🏆', title:'How Leagues Work', text:'Teams play each other twice. Win = 3 pts, Draw = 1 pt, Loss = 0 pts. After all 38 rounds, highest points total wins the title.' },
+  { badge:'League', icon:'⬇️', title:'Relegation', text:'The bottom 3 clubs drop to the Championship (2nd division). Three Championship clubs come up to replace them each season.' },
+];
+const gg = document.getElementById('guideGrid');
+guide.forEach(g => {
+  gg.innerHTML += `<div class="guide-card">
+    <span class="guide-badge">${g.badge}</span>
+    <span class="guide-icon">${g.icon}</span>
+    <h3>${g.title}</h3>
+    <p>${g.text}</p>
+  </div>`;
+});
+
+/* ── SCORES DATA ── */
+const scores = [
+  {h:'Brighton',a:'Man United',sh:0,sa:3},
+  {h:'Burnley',a:'Wolverhampton',sh:1,sa:1},
+  {h:'Crystal Palace',a:'Arsenal',sh:1,sa:2},
+  {h:'Fulham',a:'Newcastle',sh:2,sa:0},
+  {h:'Liverpool',a:'Brentford',sh:1,sa:1},
+  {h:'Man City',a:'Aston Villa',sh:1,sa:2},
+  {h:'Nottm Forest',a:'Bournemouth',sh:1,sa:1},
+  {h:'Sunderland',a:'Chelsea',sh:2,sa:1},
+  {h:'Tottenham',a:'Everton',sh:1,sa:0},
+  {h:'West Ham',a:'Leeds',sh:3,sa:0},
+];
+const sl = document.getElementById('scoresList');
+scores.forEach(m => {
+  const hw = m.sh > m.sa, aw = m.sa > m.sh;
+  sl.innerHTML += `<div class="match">
+    <div class="match-team ${hw?'winner':''}">${m.h}</div>
+    <div class="match-score">
+      <span class="score-n">${m.sh}</span>
+      <span class="score-dash">–</span>
+      <span class="score-n">${m.sa}</span>
+    </div>
+    <div class="match-team away ${aw?'winner':''}">${m.a}</div>
+    <span class="status-ft">FT</span>
+  </div>`;
+});
+
+/* ── STANDINGS DATA ── */
+const table = [
+  {r:1,n:'Arsenal',w:26,d:7,l:5,pts:85,f:['W','W','W','D','W']},
+  {r:2,n:'Manchester City',w:23,d:9,l:6,pts:78,f:['L','W','W','D','W']},
+  {r:3,n:'Manchester United',w:20,d:11,l:7,pts:71,f:['W','D','W','L','W']},
+  {r:4,n:'Aston Villa',w:19,d:8,l:11,pts:65,f:['W','L','W','W','W']},
+  {r:5,n:'Liverpool',w:17,d:9,l:12,pts:60,f:['D','W','L','D','D']},
+  {r:6,n:'Bournemouth',w:13,d:18,l:7,pts:57,f:['D','W','D','D','D']},
+  {r:7,n:'Sunderland',w:14,d:12,l:12,pts:54,f:['W','L','W','D','W']},
+  {r:8,n:'Brighton',w:14,d:11,l:13,pts:53,f:['L','W','D','L','L']},
+  {r:9,n:'Brentford',w:14,d:11,l:13,pts:53,f:['D','W','L','W','D']},
+  {r:10,n:'Chelsea',w:14,d:10,l:14,pts:52,f:['L','D','W','W','L']},
+  {r:11,n:'Fulham',w:15,d:7,l:16,pts:52,f:['W','L','W','L','W']},
+  {r:12,n:'Newcastle',w:14,d:7,l:17,pts:49,f:['L','W','L','D','L']},
+  {r:13,n:'Everton',w:13,d:10,l:15,pts:49,f:['L','D','W','L','L']},
+  {r:14,n:'Leeds',w:11,d:14,l:13,pts:47,f:['L','D','D','W','L']},
+  {r:15,n:'Crystal Palace',w:11,d:12,l:15,pts:45,f:['L','W','D','L','L']},
+  {r:16,n:'Nottm Forest',w:11,d:11,l:16,pts:44,f:['D','L','W','L','D']},
+  {r:17,n:'Tottenham',w:10,d:11,l:17,pts:41,f:['W','L','L','D','W']},
+  {r:18,n:'West Ham',w:10,d:9,l:19,pts:39,f:['W','L','L','L','W']},
+  {r:19,n:'Burnley',w:4,d:10,l:24,pts:22,f:['D','L','L','L','D']},
+  {r:20,n:'Wolverhampton',w:3,d:11,l:24,pts:20,f:['D','L','L','L','L']},
+];
+const tb = document.getElementById('tableBody');
+table.forEach(t => {
+  const p = t.w+t.d+t.l;
+  let zc = 'zb-none';
+  if(t.r<=4) zc='zb-cl'; else if(t.r<=6) zc='zb-el'; else if(t.r>=18) zc='zb-rel';
+  const formHTML = t.f.map(x => `<div class="fr ${x==='W'?'fr-w':x==='D'?'fr-d':'fr-l'}"></div>`).join('');
+  tb.innerHTML += `<tr>
+    <td><span class="rank-n">${t.r}</span></td>
+    <td><div class="team-cell">
+      <div class="zone-bar ${zc}"></div>
+      <div><div>${t.n}</div><div class="form-row">${formHTML}</div></div>
+    </div></td>
+    <td class="c">${p}</td>
+    <td class="c">${t.w}</td>
+    <td class="c">${t.d}</td>
+    <td class="c">${t.l}</td>
+    <td class="pts">${t.pts}</td>
+  </tr>`;
+});
+
+/* ── RULES DATA ── */
+const rules = [
+  {n:'01',t:'Kick-off & Restarts',b:'The match starts with a kick-off from the centre spot. The coin-toss winner picks which end to attack. After a goal is scored, the conceding team restarts with a kick-off.'},
+  {n:'02',t:'Throw-ins',b:'When the ball fully crosses the sideline, the opposing team restarts play with a two-handed throw-in from behind the head. Both feet must stay on the ground.'},
+  {n:'03',t:'Corner Kicks',b:'If a defender puts the ball behind their own goal line (without scoring), the attacking team restarts from the corner flag. Many goals are scored from corners!'},
+  {n:'04',t:'Goal Kicks',b:'When an attacker puts the ball behind the goal line (no goal), the goalkeeper restarts play with a kick from within the penalty area.'},
+  {n:'05',t:'Penalty Kicks',b:'A foul committed inside the penalty box rewards the attacking team with a penalty — a direct shot from 12 yards out, one-on-one with the goalkeeper. Very hard to save!'},
+  {n:'06',t:'VAR — Video Review',b:'The Video Assistant Referee reviews key incidents: goals, penalties, red cards, and mistaken identity. The on-field referee can check the pitchside monitor to overturn decisions.'},
+];
+const rl = document.getElementById('rulesList');
+rules.forEach(r => {
+  rl.innerHTML += `<div class="rule" onclick="this.classList.toggle('open')">
+    <div class="rule-head">
+      <span class="rn">${r.n}</span>
+      <span class="rt">${r.t}</span>
+      <span class="rarr">▾</span>
+    </div>
+    <div class="rule-body"><div class="rbd">${r.b}</div></div>
+  </div>`;
+});
+
+/* ── GLOSSARY DATA ── */
+const gloss = [
+  {t:'Hat-trick',d:'One player scores 3 goals in a single match.'},
+  {t:'Clean Sheet',d:'The team keeps a 0 goal against tally — the goalkeeper conceded nothing.'},
+  {t:'Assist',d:'The final pass or cross to the player who scores the goal.'},
+  {t:'Nutmeg',d:'Kicking the ball through an opponent\'s legs — embarrassing for them!'},
+  {t:'Brace',d:'A player scores exactly 2 goals in one match.'},
+  {t:'Counter-attack',d:'Quickly attacking after winning the ball while the opposition is out of position.'},
+  {t:'Aggregate',d:'Combined score over two legs in a cup tie. Higher total progresses.'},
+  {t:'Relegation',d:'Bottom 3 clubs drop down to a lower division at season\'s end.'},
+  {t:'Derby',d:'A match between two fierce local rivals — always highly charged!'},
+  {t:'Extra Time',d:'Two extra 15-minute periods played if a knockout match is level after 90 mins.'},
+  {t:'Penalty Shootout',d:'Each team takes 5 alternating penalties if still tied after extra time.'},
+  {t:'Transfer Window',d:'The set period (summer/January) when clubs can buy and sell players.'},
+];
+const gGrid = document.getElementById('glossGrid');
+gloss.forEach(g => {
+  gGrid.innerHTML += `<div class="gc"><div class="gt">${g.t}</div><div class="gd">${g.d}</div></div>`;
+});
+
+/* ── NAV ACTIVE STATE ── */
+const sections = ['guide','scores','standings','positions','rules','glossary'];
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur2 = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && window.scrollY >= el.getBoundingClientRect().top + window.scrollY - 80) cur2 = id;
+  });
+  navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur2));
+});
+</script>
+</body>
+</html>
