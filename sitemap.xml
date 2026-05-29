@@ -8,19 +8,7 @@
   </url>
 
   <url>
-    <loc>https://my-webfy3.netlify.app/contact.html</loc>
-    <lastmod>2026-05-29</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
     <loc>https://my-webfy3.netlify.app/features.html</loc>
-    <lastmod>2026-05-29</lastmod>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://my-webfy3.netlify.app/football_website.html</loc>
     <lastmod>2026-05-29</lastmod>
     <priority>0.8</priority>
   </url>
@@ -32,7 +20,7 @@
   </url>
 
   <url>
-    <loc>https://my-webfy3.netlify.app/teams.html</loc>
+    <loc>https://my-webfy3.netlify.app/contact.html</loc>
     <lastmod>2026-05-29</lastmod>
     <priority>0.8</priority>
   </url>
